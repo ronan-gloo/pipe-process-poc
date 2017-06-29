@@ -1,11 +1,11 @@
 <?php require 'vendor/autoload.php';
 
+$iteratorCount = 15555;
+
+// Creates validators
 $filter = new Zend\InputFilter\InputFilter();
 $filter->add([
-    'name'    => 'id',
-    'filters' => [
-        ['name' => 'int']
-    ],
+    'name'       => 'id',
     'validators' => [
         [
             'name'    => 'GreaterThan',
@@ -16,7 +16,7 @@ $filter->add([
         [
             'name'    => 'LessThan',
             'options' => [
-                'max' => 15550,
+                'max' => $iteratorCount - 5,
             ]
         ]
     ]
@@ -51,7 +51,7 @@ $pipe = new \Batch\Pipe();
 // transform scalar to array
 $pipe->pipe(new \Batch\Operation\Transform($transform));
 
-// validate data with input filter adapter
+// validate data with input filter adapter : it breaks the chain on error
 $pipe->pipe(new \Batch\InputFilter\FilterOperation($filter, $report));
 
 // Add final handler
@@ -65,4 +65,4 @@ $pipe->apply((function($limit) {
     foreach (range(1, $limit) as $id) {
         yield (string) $id;
     }
-})(15555));
+})($iteratorCount));
