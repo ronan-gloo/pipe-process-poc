@@ -54,11 +54,11 @@ $pipe->pipe(new \Batch\Operation\Transform($transform));
 // validate data with input filter adapter : it breaks the chain on error
 $pipe->pipe(new \Batch\InputFilter\FilterOperation($filter, $report));
 
-// Add final handler
-$pipe->pipe(new \Batch\Operation\FinalOperation($final));
-
 // Batch collect every 10000 elements
 $pipe->pipe(new \Batch\Operation\Collect(1000, $collector));
+
+// Add final handler
+$pipe->pipe(new \Batch\Operation\FinalOperation($final));
 
 // Run the pipe with iterator
 $pipe->apply((function($limit) {

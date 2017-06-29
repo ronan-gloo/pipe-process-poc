@@ -36,8 +36,8 @@ class Pipe
             (new Apply($queue))($element);
         }
 
-        (new Flush(array_filter($this->operations, function($operation) {
+        (new Flush(array_reverse(array_filter($this->operations, function($operation) {
             return $operation instanceof FlushableInterface;
-        })))();
+        }))))();
     }
 }
